@@ -197,6 +197,7 @@ window#waybar.termite {
 }
 
 #custom-poweroff,
+#network.disconnected,
 #power-profiles-daemon.performance {
     color: #f53c3c;
 }
@@ -221,10 +222,6 @@ label:focus {
 
 #backlight {
     background-color: #90b1b1;
-}
-
-#network.disconnected {
-    color: #f53c3c;
 }
 
 #pulseaudio {
@@ -253,7 +250,6 @@ label:focus {
 
 #temperature.critical {
     color: #eb4d4b;
-    /* background-color: #eb4d4b; */
 }
 
 #tray {
@@ -322,6 +318,7 @@ label:focus {
     background-color: #0069d4;
 }
 
+#mpris,
 #pulseaudio,
 #power-management,
 #power,
@@ -343,6 +340,7 @@ label:focus {
     padding-right: 4px;
 }
 
+#mpris,
 #custom-power-wrapper,
 #custom-notification {
     padding-left: 10px;
