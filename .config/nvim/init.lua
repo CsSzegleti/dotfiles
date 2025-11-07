@@ -681,12 +681,7 @@ require('lazy').setup({
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
-
-        angularls = {
-          root_dir = require('lspconfig.util').root_pattern('angular.json', 'nx.json'),
-        },
         ts_ls = {},
-        html = {},
         jdtls = {},
         kotlin_language_server = {},
         cssls = {},
@@ -726,6 +721,8 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'ktlint',
         'kotlin-debug-adapter',
+        'angularls',
+        'html-lsp',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -739,7 +736,6 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            print(vim.inspect(server))
             require('lspconfig')[server_name].setup(server)
           end,
         },
@@ -997,9 +993,7 @@ require('lazy').setup({
   require 'custom.plugins.harpoon',
   require 'custom.plugins.toggle_terminal',
   -- require 'custom.plugins.java',
-  -- require 'custom.plugins.rose-pine',
   --
-
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
@@ -1031,6 +1025,14 @@ require('lazy').setup({
     },
   },
 })
+
+-- custom angular setup
+vim.lsp.config('angularls', require 'lsp.angular-lsp')
+vim.lsp.enable 'angularls'
+
+-- custom html setup
+vim.lsp.config('html', require 'lsp.html')
+vim.lsp.enable 'html'
 
 vim.cmd [[
   if filereadable(".nvim.lua")
