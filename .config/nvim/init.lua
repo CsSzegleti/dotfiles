@@ -484,7 +484,16 @@ require('lazy').setup({
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { 'mason-org/mason.nvim', opts = {} },
-      'mason-org/mason-lspconfig.nvim',
+      {
+        'mason-org/mason-lspconfig.nvim',
+        opts = {
+          automatic_enable = {
+            exclude = {
+              'kotlin_lsp',
+            },
+          },
+        },
+      },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -683,7 +692,8 @@ require('lazy').setup({
         --
         ts_ls = {},
         jdtls = {},
-        kotlin_language_server = {},
+        -- kotlin_lsp = {},
+        -- kotlin_language_server = {},
         cssls = {},
         css_variables = {},
         jsonls = {},
@@ -720,6 +730,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'ktlint',
+        'kotlin-lsp',
         'kotlin-debug-adapter',
         'angularls',
         'html-lsp',
@@ -738,6 +749,29 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+        },
+      }
+    end,
+  },
+
+  {
+    'AlexandrosAlexiou/kotlin.nvim',
+    ft = { 'kotlin' },
+    dependencies = { 'mason.nvim', 'mason-lspconfig.nvim', 'stevearc/oil.nvim' },
+    config = function()
+      require('kotlin').setup {
+        -- Optional: Specify root markers for multi-module projects
+        root_markers = {
+          'gradlew',
+          '.git',
+          'mvnw',
+          'settings.gradle',
+        },
+        -- Optional: Specify a custom Java path to run the server
+        -- jre_path = os.getenv 'JAVA_21_HOME',
+        -- Optional: Specify additional JVM arguments
+        jvm_args = {
+          '-Xmx4g',
         },
       }
     end,
@@ -768,7 +802,7 @@ require('lazy').setup({
           return nil
         else
           return {
-            timeout_ms = 500,
+            timeout_ms = 2500,
             lsp_format = 'fallback',
           }
         end
